@@ -15,7 +15,7 @@ showMyBottomSheet(
     required int index,
     required List bottomSheetList,
     required bool showCreatePlaylistOption}) {
-  showModalBottomSheet(
+  return showModalBottomSheet(
     backgroundColor: Color(themeColor).withOpacity(.9),
     context: context,
     builder: (BuildContext context) {
@@ -112,10 +112,6 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                       if (index == 2 /*look list*/ && bottomNavIndex == 3) {
                         textFieldController.text = gridViewList[widget.index];
 
-                        if (mounted) {
-                          return;
-                        }
-
                         playlistcreate(
                             context: context,
                             iconText: 'Update',
@@ -166,11 +162,14 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
         : Column(
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    playlistcreate(
-                        context: context, iconText: 'OK', updateOrNot: false);
-                  },
-                  child: const Text('Create Playlist')),
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                  playlistcreate(
+                      context: context, iconText: 'OK', updateOrNot: false);
+                },
+                child: const Text('Create Playlist'),
+              ),
               Flexible(
                 child: ListView.builder(
                   itemCount: playlistbox.length,
@@ -186,10 +185,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                             playlist.playListItems
                                 .add(widget.bottomSheetList[widget.index]);
                             toastMessage(message: 'Video added to playlist');
-                            // Update the Hive box with the modified playlist instance
                             await playlistbox.putAt(index, playlist);
-                          } else {
-                            //folder to video playlist
                           }
                           Navigator.of(context).pop();
                         },
