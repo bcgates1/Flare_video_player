@@ -1,7 +1,9 @@
-import 'package:flare_video_player/db/db_model.dart/model.dart';
-import 'package:flare_video_player/splash_screen/splash_screen.dart';
+import 'package:flare_video_player/application/bloc/grid_bloc/grid_list_bloc.dart';
 import 'package:flare_video_player/colors.dart';
+import 'package:flare_video_player/domain/db/db_model.dart/model.dart';
+import 'package:flare_video_player/presentaion/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -27,13 +29,16 @@ class Myapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(backgroundColor: Color(themeColor)),
+    return BlocProvider(
+      create: (context) => GridListBloc(),
+      child: MaterialApp(
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(backgroundColor: Color(themeColor)),
+        ),
+        title: 'Flare Video Player',
+        debugShowCheckedModeBanner: false,
+        home: const SplashScreen(),
       ),
-      title: 'Flare Video Player',
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
     );
   }
 }
