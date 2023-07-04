@@ -1,8 +1,9 @@
 import 'package:flare_video_player/application/bloc/grid_bloc/grid_list_bloc.dart';
+import 'package:flare_video_player/application/cubit/bottom_sheet/bottom_sheet_cubit.dart';
+import 'package:flare_video_player/application/cubit/search_screen/search_like_cubit.dart';
 import 'package:flare_video_player/infrastructure/fetched_directory_lists.dart';
 import 'package:flare_video_player/presentaion/bottom_sheet/bottom_sheet_widget.dart';
 import 'package:flare_video_player/colors.dart';
-import 'package:flare_video_player/presentaion/common_widgets/grid_view.dart';
 import 'package:flare_video_player/presentaion/common_widgets/thumbnail_widget.dart';
 import 'package:flare_video_player/presentaion/common_widgets/video_player_screen.dart';
 import 'package:flare_video_player/presentaion/home_screen/home_screen.dart';
@@ -10,7 +11,7 @@ import 'package:flare_video_player/presentaion/search_screen/search_screen_fucti
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-ValueNotifier searchScreenLike = ValueNotifier(likedBox.values);
+
 
 class CustomSearchDelegate extends SearchDelegate {
   bool filter1 = false;
@@ -78,15 +79,10 @@ class CustomSearchDelegate extends SearchDelegate {
       onPressed: () {
         close(context, null);
         if (bottomNavIndex == 2) {
-          // gridListValueNotifier.value = gridViewList = likedBox.values.toList();
           BlocProvider.of<GridListBloc>(context)
               .add(GridListEvent(blocGridViewList: likedBox.values.toList()));
         }
         if (bottomNavIndex == 3) {
-          // gridListValueNotifier.value = gridViewList = playlistbox.values
-          //     .map((playlist) => playlist.playListName)
-          //     .toList();
-
           BlocProvider.of<GridListBloc>(context).add(GridListEvent(
               blocGridViewList: playlistbox.values
                   .map((playlist) => playlist.playListName)
@@ -148,9 +144,8 @@ class CustomSearchDelegate extends SearchDelegate {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ValueListenableBuilder(
-                          valueListenable: searchScreenLike,
-                          builder: (BuildContext context, value, _) {
+                        BlocBuilder<SearchLikeCubit, SearchLikeState>(
+                          builder: (BuildContext context, value) {
                             return IconButton(
                                 onPressed: () {
                                   if (likedOrNot(string: result)) {
@@ -164,7 +159,12 @@ class CustomSearchDelegate extends SearchDelegate {
                                         videoList[searchScreenIndexOf(
                                             videoName: result)]);
                                   }
-                                  searchScreenLike.value = likedBox.values;
+                                  // searchScreenLike.value = likedBox.values;
+
+                                  final cubit =
+                                      BlocProvider.of<SearchLikeCubit>(context);
+                                  cubit
+                                      .searchLikeList(likedBox.values.toList());
                                 },
                                 icon: likedOrNot(string: result)
                                     ? const Icon(
@@ -177,9 +177,14 @@ class CustomSearchDelegate extends SearchDelegate {
                         IconButton(
                           onPressed: () {
                             showMyBottomSheet(
-                                context: context,
-                                index: searchScreenIndexOf(videoName: result),
-                                bottomSheetList: videoList,
+                              context: context,
+                              index: searchScreenIndexOf(videoName: result),
+                              bottomSheetList: videoList,
+                              // showCreatePlaylistOption: true
+                            );
+                            final cubit =
+                                BlocProvider.of<BottomSheetCubit>(context);
+                            cubit.showCreatePlaylistOption(
                                 showCreatePlaylistOption: true);
                           },
                           icon: const Icon(Icons.playlist_add),

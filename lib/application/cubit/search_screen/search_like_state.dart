@@ -1,7 +1,7 @@
-// part of 'search_like_cubit.dart';
+part of 'search_like_cubit.dart';
 
-//  class SearchLikeState {
-//   List searchLikeList;
-//   SearchLikeState({required this.searchLikeList});
-//  }
+ class SearchLikeState {
+  List searchLikeList;
+  SearchLikeState({required this.searchLikeList});
+ }
 

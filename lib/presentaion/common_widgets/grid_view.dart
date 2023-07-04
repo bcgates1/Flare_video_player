@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flare_video_player/application/bloc/grid_bloc/grid_list_bloc.dart';
+import 'package:flare_video_player/application/cubit/bottom_sheet/bottom_sheet_cubit.dart';
 import 'package:flare_video_player/infrastructure/fetched_directory_lists.dart';
 import 'package:flare_video_player/presentaion/bottom_sheet/bottom_sheet_widget.dart';
 import 'package:flare_video_player/colors.dart';
@@ -11,10 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
-// List gridViewList = [];
 bool flag = false;
 late int playlistValue;
-// ValueNotifier<List> gridListValueNotifier = ValueNotifier(gridViewList);
 
 class MyGridView extends StatelessWidget {
   late List gridViewList;
@@ -29,7 +28,6 @@ class MyGridView extends StatelessWidget {
 
     return BlocBuilder<GridListBloc, GridListState>(
       builder: (context, state) {
-        log('${state.gridViewList.toString()} gridViewList');
         return state.gridViewList.isNotEmpty
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -79,8 +77,8 @@ class MyGridView extends StatelessWidget {
 
                                           state.gridViewList = a.playListItems;
                                         }
-                                        // gridListValueNotifier.value = gridViewList;
-                                        // gridListValueNotifier.notifyListeners();
+                                        log('${index} gridview index');
+
                                         BlocProvider.of<GridListBloc>(context)
                                             .add(GridListEvent(
                                                 blocGridViewList:
@@ -99,8 +97,13 @@ class MyGridView extends StatelessWidget {
                                             context: context,
                                             index: index,
                                             bottomSheetList: state.gridViewList,
-                                            showCreatePlaylistOption: false,
+                                            // showCreatePlaylistOption: false,
                                           );
+                                          final cubit =
+                                              BlocProvider.of<BottomSheetCubit>(
+                                                  context);
+                                          cubit.showCreatePlaylistOption(
+                                              showCreatePlaylistOption: false);
                                         }
                                       },
                                       child: Icon(
@@ -151,8 +154,13 @@ class MyGridView extends StatelessWidget {
                                           context: context,
                                           index: index,
                                           bottomSheetList: state.gridViewList,
-                                          showCreatePlaylistOption: false,
+                                          // showCreatePlaylistOption: false,
                                         );
+                                        final cubit =
+                                            BlocProvider.of<BottomSheetCubit>(
+                                                context);
+                                        cubit.showCreatePlaylistOption(
+                                            showCreatePlaylistOption: false);
                                       },
                                       child: Icon(
                                         Icons.more_vert,

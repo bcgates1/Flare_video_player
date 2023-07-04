@@ -1,4 +1,9 @@
 import 'package:flare_video_player/application/bloc/grid_bloc/grid_list_bloc.dart';
+import 'package:flare_video_player/application/cubit/bottom_sheet/bottom_sheet_cubit.dart';
+import 'package:flare_video_player/application/cubit/history_screen/cubit/history_screen_cubit.dart';
+import 'package:flare_video_player/application/cubit/playlistcreate/cubit/playlist_create_cubit.dart';
+import 'package:flare_video_player/application/cubit/search_screen/search_like_cubit.dart';
+import 'package:flare_video_player/application/cubit/video_player/cubit/video_screen_cubit.dart';
 import 'package:flare_video_player/colors.dart';
 import 'package:flare_video_player/domain/db/db_model.dart/model.dart';
 import 'package:flare_video_player/presentaion/splash_screen/splash_screen.dart';
@@ -29,8 +34,15 @@ class Myapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GridListBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => GridListBloc()),
+        BlocProvider(create: (context) => BottomSheetCubit()),
+        BlocProvider(create: (context) => SearchLikeCubit()),
+        BlocProvider(create: (context) => HistoryScreenCubit()),
+        BlocProvider(create: (context) => VideoScreenCubit()),
+        BlocProvider(create: (context) => PlaylistCreateCubit()),
+      ],
       child: MaterialApp(
         theme: ThemeData(
           appBarTheme: AppBarTheme(backgroundColor: Color(themeColor)),

@@ -1,5 +1,4 @@
 import 'package:flare_video_player/infrastructure/directory_fetch_fuction.dart';
-import 'package:flare_video_player/presentaion/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {

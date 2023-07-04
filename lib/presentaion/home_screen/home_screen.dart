@@ -1,5 +1,6 @@
 import 'package:flare_video_player/application/bloc/grid_bloc/grid_list_bloc.dart';
 import 'package:flare_video_player/colors.dart';
+import 'package:flare_video_player/infrastructure/common_fuction.dart';
 import 'package:flare_video_player/infrastructure/directory_fetch_fuction.dart';
 import 'package:flare_video_player/infrastructure/fetched_directory_lists.dart';
 import 'package:flare_video_player/presentaion/common_widgets/toast_view.dart';
@@ -20,8 +21,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 int bottomNavIndex = 0;
 
 class HomeScreen extends StatelessWidget {
-  GlobalKey _bodyKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GridListBloc, GridListState>(
@@ -31,9 +30,12 @@ class HomeScreen extends StatelessWidget {
             backgroundColor: Color(themeColor),
             child: Column(
               children: [
-                Image.asset(
-                  'assets/AppLogo.png',
-                  fit: BoxFit.contain,
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Image.asset(
+                    'assets/AppLogo.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(
@@ -65,7 +67,6 @@ class HomeScreen extends StatelessWidget {
                     folderMapList.clear();
                     await videoFetch();
                     if (bottomNavIndex == 0 && flag == false) {
-                      // gridListValueNotifier.value = gridViewList = folderList;
                       BlocProvider.of<GridListBloc>(context)
                           .add(GridListEvent(blocGridViewList: folderList));
                     }
@@ -104,10 +105,8 @@ class HomeScreen extends StatelessWidget {
               bottomNavIndex = value;
               flag = false;
 
-              // Force a rebuild of the body widget
-              // _bodyKey = GlobalKey();
               BlocProvider.of<GridListBloc>(context)
-                  .add(GridListEvent(blocGridViewList: []));
+                  .add(GridListEvent(blocGridViewList: navbar_list_update(index: value)));
             },
             items: List.generate(bottomNavIcon.length, (index) {
               return BottomNavigationBarItem(

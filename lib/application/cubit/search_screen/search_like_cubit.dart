@@ -1,8 +1,11 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:meta/meta.dart';
+import 'package:bloc/bloc.dart';
 
-// part 'search_like_state.dart';
+part 'search_like_state.dart';
 
-// class SearchLikeCubit extends Cubit<SearchLikeState> {
-//   SearchLikeCubit() : super(SearchLikeInitial());
-// }
+class SearchLikeCubit extends Cubit<SearchLikeState> {
+  SearchLikeCubit() : super(SearchLikeState(searchLikeList: []));
+
+  void searchLikeList(List searchLikeList) {
+    emit(SearchLikeState(searchLikeList: searchLikeList));
+  }
+}
