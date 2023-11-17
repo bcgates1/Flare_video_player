@@ -8,11 +8,9 @@ thumbnailWidget({required videoPath}) {
     child: Stack(
       children: [
         Container(
-          // constraints: const BoxConstraints(
-          // minWidth: 150, minHeight: 100, maxHeight: 100, maxWidth: 150),
           color: Colors.black,
           height: 100,
-          width: 170,
+          width: 160,
           child: ThumbnailWidget(videoPath: videoPath),
         ),
         Positioned(
@@ -38,13 +36,14 @@ class VideoDuration extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return Text(snapshot.data!,
               style: const TextStyle(
-                  backgroundColor: Colors.black,
-                  color: Colors.white,
-                  fontSize: 12));
-        } else {
-          return Text('Error: ${snapshot.error}',
+                  backgroundColor: Colors.black, color: Colors.white, fontSize: 12));
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text('00:00',
               style: const TextStyle(
-                  backgroundColor: Colors.black, color: Colors.white));
+                  backgroundColor: Colors.black, color: Colors.white, fontSize: 12));
+        } else {
+          return Text('${snapshot.error}',
+              style: const TextStyle(backgroundColor: Colors.black, color: Colors.white));
         }
       },
     );
@@ -60,9 +59,13 @@ Future<int> getVideoDurationForSearch(videoPath) async {
 
 Future<String> getVideoDuration(videoPath) async {
   final videoInfo = FlutterVideoInfo();
-  var info = await videoInfo.getVideoInfo(videoPath);
+  final VideoData? info = await videoInfo.getVideoInfo(videoPath);
 
-  return convertMillisecondsToTime(info!.duration!.toInt());
+  if (info?.duration == null) {
+    return 'error';
+  } else {
+    return convertMillisecondsToTime(info!.duration!.toInt());
+  }
 }
 
 convertMillisecondsToTime(int milliseconds) {

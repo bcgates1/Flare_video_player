@@ -23,9 +23,10 @@ Future<void> main(List<String> args) async {
     ..registerAdapter(PlaylistAdapter())
     ..registerAdapter(HistoryListAdapter());
 
-  await Hive.openBox('History');
-  await Hive.openBox('likedList');
-  await Hive.openBox('Playlist');
+  await Hive
+    ..openBox('History')
+    ..openBox('likedList')
+    ..openBox('Playlist');
   runApp(const Myapp());
 }
 

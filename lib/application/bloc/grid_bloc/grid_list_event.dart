@@ -1,6 +1,6 @@
 part of 'grid_list_bloc.dart';
 
 class GridListEvent {
-  List blocGridViewList;
+  List<String> blocGridViewList;
   GridListEvent({required this.blocGridViewList});
 }

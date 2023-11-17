@@ -18,7 +18,6 @@ showMyBottomSheet({
   required BuildContext context,
   required int index,
   required List bottomSheetList,
-  // required bool showCreatePlaylistOption
 }) {
   return showModalBottomSheet(
     backgroundColor: Color(themeColor).withOpacity(.9),
@@ -29,7 +28,6 @@ showMyBottomSheet({
         list: bottomSheetLists[bottomNavIndex],
         index: index,
         bottomSheetList: bottomSheetList,
-        // showCreatePlaylistOption: showCreatePlaylistOption,
       );
     },
   );
@@ -38,9 +36,8 @@ showMyBottomSheet({
 class MyBottomSheet extends StatelessWidget {
   final BuildContext context;
   final List list;
-  int index;
-  List bottomSheetList;
-  // bool showCreatePlaylistOption;
+  final int index;
+  final List bottomSheetList;
 
   MyBottomSheet({
     super.key,
@@ -48,20 +45,14 @@ class MyBottomSheet extends StatelessWidget {
     required this.list,
     required this.index,
     required this.bottomSheetList,
-    // required this.showCreatePlaylistOption,
   });
-
-  // final cubit = BottomSheetCubit();
 
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<BottomSheetCubit>(context);
 
-    cubit.showCreatePlaylistOption(showCreatePlaylistOption: false);
     return BlocBuilder<BottomSheetCubit, BottomSheetState>(
       builder: (context, state) {
-        log('state.showCreatePlaylistOption: ${state.showCreatePlaylistOption}');
-
         return !(state.showCreatePlaylistOption)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,20 +69,15 @@ class MyBottomSheet extends StatelessWidget {
                               likedBox.delete(bottomSheetList[this.index]);
 
                               if (bottomNavIndex == 2) {
-                                BlocProvider.of<GridListBloc>(context)
-                                    .add(GridListEvent(blocGridViewList: likedBox.values.toList()));
+                                BlocProvider.of<GridListBloc>(context).add(GridListEvent(
+                                    blocGridViewList: likedBox.values.toList() as List<String>));
                               }
+                              toastMessage(message: 'video removed from liked list');
                             } else {
                               likedBox.put(
                                   bottomSheetList[this.index], bottomSheetList[this.index]);
+                              toastMessage(message: 'video added to liked list');
                             }
-                            //log debugging
-
-                            log('${this.index.toString()} bottomsheet list');
-
-                            log('${likedBox.values.toString()} bottomsheet list');
-
-                            //log debugging
 
                             Navigator.of(context).pop();
                           }
@@ -105,8 +91,8 @@ class MyBottomSheet extends StatelessWidget {
                                 .map((playlist) => playlist.playListName)
                                 .toList();
 
-                            BlocProvider.of<GridListBloc>(context)
-                                .add(GridListEvent(blocGridViewList: playlistNames));
+                            BlocProvider.of<GridListBloc>(context).add(
+                                GridListEvent(blocGridViewList: playlistNames as List<String>));
                             log('${playlistNames.toString()} playlist names');
 
                             toastMessage(message: 'Playlist deleted');
@@ -117,8 +103,6 @@ class MyBottomSheet extends StatelessWidget {
                             playlist.playListItems.removeAt(this.index);
 
                             await playlistbox.putAt(playlistValue, playlist);
-
-                            // log('${playlistbox.values.first.playListItems} playlist');
 
                             if (playlistbox.values.isNotEmpty) {
                               final a = playlistbox.getAt(playlistValue);
@@ -180,7 +164,7 @@ class MyBottomSheet extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
 
                       playlistcreate(context: context, iconText: 'OK', updateOrNot: false);
                     },

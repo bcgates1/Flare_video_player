@@ -12,9 +12,6 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final historyListBox = Hive.box('History');
-    // final cubit = BlocProvider.of<HistoryScreenCubit>(context);
-
-    // cubit.historyList(historyListBox.values.toList());
 
     return Scaffold(
       appBar: AppBar(
@@ -40,17 +37,6 @@ class HistoryScreen extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const VideoPlayer(),
                           ));
-
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (_) =>
-                          //         BlocProvider<HistoryScreenCubit>.value(
-                          //       value: BlocProvider.of<HistoryScreenCubit>(
-                          //           context),
-                          //       child: VideoPlayer(),
-                          //     ),
-                          //   ),
-                          // );
                         },
                         child: Column(
                           children: [

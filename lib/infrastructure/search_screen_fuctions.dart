@@ -1,20 +1,25 @@
-import 'package:flare_video_player/infrastructure/fetched_directory_lists.dart';
+import 'dart:developer';
+
+import 'package:flare_video_player/infrastructure/common_lists.dart';
 import 'package:flare_video_player/presentaion/bottom_sheet/bottom_sheet_widget.dart';
 import 'package:flare_video_player/presentaion/common_widgets/thumbnail_widget.dart';
 
 List<List<dynamic>> searchTerms = [];
 
-nameInsert() async {
+searchNameDurationInsert({bool filterOn = false}) async {
   searchTerms = List.generate(videoList.length, (_) => List.filled(2, 'a'));
+  final start = DateTime.now();
 
   for (int i = 0; i < videoList.length; i++) {
-    for (int j = 0; j < 2; j++) {
-      if (j == 0) searchTerms[i][j] = videoList[i].toString().split('/').last;
-      if (j == 1) {
-        searchTerms[i][j] = await getVideoDurationForSearch(videoList[i]);
-      }
+    if (!filterOn) {
+      searchTerms[i][0] = videoList[i].toString().split('/').last;
+    } else {
+      searchTerms[i][1] = await getVideoDurationForSearch(videoList[i]);
     }
   }
+  final end = DateTime.now();
+  log((end.difference(start)).toString());
+  log(searchTerms.toString());
 }
 
 int searchScreenIndexOf({required String videoName}) {
@@ -27,6 +32,5 @@ int searchScreenIndexOf({required String videoName}) {
 }
 
 bool likedOrNot({required String string}) {
-  return likedBox.values
-      .contains(videoList[searchScreenIndexOf(videoName: string)]);
+  return likedBox.values.contains(videoList[searchScreenIndexOf(videoName: string)]);
 }

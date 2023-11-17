@@ -52,7 +52,7 @@ class PlaylistAdapter extends TypeAdapter<Playlist> {
     };
     return Playlist(
       playListName: fields[0] as String,
-      playListItems: (fields[1] as List?)?.cast<dynamic>(),
+      playListItems: (fields[1] as List?)?.cast<String>(),
     );
   }
 

@@ -79,7 +79,7 @@ playlistcreate(
                       BlocProvider.of<GridListBloc>(context).add(GridListEvent(
                           blocGridViewList: playlistbox.values
                               .map((playlist) => playlist.playListName)
-                              .toList()));
+                              .toList()as List<String>));
 
                       toastMessage(message: 'Playlist Name updated successfully');
                       if (!context.mounted) return;

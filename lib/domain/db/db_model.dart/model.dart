@@ -15,7 +15,7 @@ class Playlist {
   String playListName;
 
   @HiveField(1)
-  List? playListItems;
+  List<String>? playListItems;
 
   Playlist({required this.playListName, required this.playListItems});
   setPlaylistName(String name) {

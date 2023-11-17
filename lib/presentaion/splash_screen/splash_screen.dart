@@ -9,22 +9,16 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: waitForPermission(context: context),
+          future: fetchAllVideoFromSplash(context: context),
           builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Image.asset(
-                'assets/Flare.gif',
-                fit: BoxFit.fill,
-              );
-            } else {
-              return const SizedBox();
-            }
+            return Image.asset(
+              'assets/Flare.gif',
+              fit: BoxFit.fill,
+            );
           },
         ),
       ),
       backgroundColor: Colors.black,
     );
   }
-
-  
 }

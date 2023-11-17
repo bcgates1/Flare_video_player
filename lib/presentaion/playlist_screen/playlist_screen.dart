@@ -10,8 +10,8 @@ class PlaylistScreen extends StatelessWidget {
     final playlistbox = Hive.box('Playlist');
     // playlistbox.clear();
     // Get all playlist names as a list
-    List playlistNames =
-        playlistbox.values.map((playlist) => playlist.playListName).toList();
+    List<String> playlistNames =
+        playlistbox.values.map((playlist) => playlist.playListName.toString()).toList();
 
     return MyGridView(gridViewListLocal: playlistNames);
   }

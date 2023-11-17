@@ -10,6 +10,7 @@ class LikedScreen extends StatelessWidget {
     final likedBox = Hive.box('likedList');
     flag = true;
 
-    return MyGridView(gridViewListLocal: likedBox.values.toList());
+    return MyGridView(
+        gridViewListLocal: likedBox.values.map((likedList) => likedList.toString()).toList());
   }
 }

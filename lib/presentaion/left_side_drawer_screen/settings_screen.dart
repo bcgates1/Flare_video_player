@@ -24,30 +24,31 @@ class SettingsScreen extends StatelessWidget {
               if (index == 1) goToWhatsapp();
               if (index == 2) {
                 showAboutDialog(
-                    context: context,
-                    applicationIcon: Image.asset(
-                      'assets/AppLogo.png',
-                      // fit: BoxFit.fitWidth,
-                      scale: 6,
-                    ),
-                    applicationName: '',
+                  context: context,
+                  applicationIcon: Image.asset(
+                    'assets/AppLogo.png',
+                    // fit: BoxFit.fitWidth,
+                    scale: 0.02 * MediaQuery.sizeOf(context).width,
+                  ),
+                  applicationName: '',
 
-                    // applicationVersion: '0.1',
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                          child: Column(
-                        children: [
-                          Text('Version: 0.1'),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text('Developed by Bharath Chandran '),
-                        ],
-                      )),
-                    ]);
+                  // applicationVersion: '0.1',
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                        child: Column(
+                      children: [
+                        Text('Version: 0.1'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('Developed by Bharath Chandran '),
+                      ],
+                    )),
+                  ],
+                );
               }
             },
             title: Text(settingsList[index]),
@@ -63,11 +64,7 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-List settingsList = [
-  'Join Our Telegram Channel',
-  'Join Our WhatsApp Group',
-  'About'
-];
+List settingsList = ['Join Our Telegram Channel', 'Join Our WhatsApp Group', 'About'];
 List settingsIconList = [
   const IconData(0xf0586, fontFamily: 'MaterialIcons'),
   Icons.chat,

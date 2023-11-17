@@ -1,24 +1,22 @@
 import 'package:flare_video_player/application/bloc/grid_bloc/grid_list_bloc.dart';
 import 'package:flare_video_player/application/cubit/bottom_sheet/bottom_sheet_cubit.dart';
 import 'package:flare_video_player/application/cubit/search_screen/search_like_cubit.dart';
-import 'package:flare_video_player/infrastructure/fetched_directory_lists.dart';
+import 'package:flare_video_player/infrastructure/common_lists.dart';
 import 'package:flare_video_player/presentaion/bottom_sheet/bottom_sheet_widget.dart';
 import 'package:flare_video_player/colors.dart';
 import 'package:flare_video_player/presentaion/common_widgets/thumbnail_widget.dart';
 import 'package:flare_video_player/presentaion/common_widgets/video_player_screen.dart';
 import 'package:flare_video_player/presentaion/home_screen/home_screen.dart';
-import 'package:flare_video_player/presentaion/search_screen/search_screen_fuctions.dart';
+import 'package:flare_video_player/infrastructure/search_screen_fuctions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
 class CustomSearchDelegate extends SearchDelegate {
-  bool filter1 = false;
-  int filter1Value = 20000;
+  // bool filter1 = false;
+  // int filter1Value = 20000;
 
-  bool filter2 = false;
-  int filter2Value = 60000;
+  // bool filter2 = false;
+  // int filter2Value = 60000;
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -37,39 +35,40 @@ class CustomSearchDelegate extends SearchDelegate {
           color: Color(secondaryColor),
         ),
       ),
-      PopupMenuButton(
-        itemBuilder: (BuildContext context) {
-          return [
-            PopupMenuItem(
-              child: const Text("video < 20 sec"),
-              onTap: () {
-                filter1 = !filter1;
-                filter2 = false;
-                query = '';
-              },
-            ),
-            PopupMenuItem(
-              child: const Text("video > 1min"),
-              onTap: () {
-                filter2 = !filter2;
-                filter1 = false;
-                query = '';
-              },
-            ),
-            PopupMenuItem(
-              child: const Text("All video"),
-              onTap: () {
-                filter1 = filter2 = false;
-                query = '';
-              },
-            ),
-          ];
-        },
-        icon: Icon(
-          Icons.filter_alt_rounded,
-          color: Color(secondaryColor),
-        ),
-      ),
+      //filter video with duration disabled due to fetch time of getvideo info
+      // PopupMenuButton(
+      //   itemBuilder: (BuildContext context) {
+      //     return [
+      //       PopupMenuItem(
+      //         child: const Text("video < 20 sec"),
+      //         onTap: () {
+      //           filter1 = !filter1;
+      //           filter2 = false;
+      //           query = '';
+      //         },
+      //       ),
+      //       PopupMenuItem(
+      //         child: const Text("video > 1min"),
+      //         onTap: () {
+      //           filter2 = !filter2;
+      //           filter1 = false;
+      //           query = '';
+      //         },
+      //       ),
+      //       PopupMenuItem(
+      //         child: const Text("All video"),
+      //         onTap: () {
+      //           filter1 = filter2 = false;
+      //           query = '';
+      //         },
+      //       ),
+      //     ];
+      //   },
+      //   icon: Icon(
+      //     Icons.filter_alt_rounded,
+      //     color: Color(secondaryColor),
+      //   ),
+      // ),
     ];
   }
 
@@ -80,13 +79,12 @@ class CustomSearchDelegate extends SearchDelegate {
         close(context, null);
         if (bottomNavIndex == 2) {
           BlocProvider.of<GridListBloc>(context)
-              .add(GridListEvent(blocGridViewList: likedBox.values.toList()));
+              .add(GridListEvent(blocGridViewList: likedBox.values.toList() as List<String>));
         }
         if (bottomNavIndex == 3) {
           BlocProvider.of<GridListBloc>(context).add(GridListEvent(
-              blocGridViewList: playlistbox.values
-                  .map((playlist) => playlist.playListName)
-                  .toList()));
+              blocGridViewList: playlistbox.values.map((playlist) => playlist.playListName).toList()
+                  as List<String>));
         }
       },
       icon: Icon(
@@ -117,13 +115,11 @@ class CustomSearchDelegate extends SearchDelegate {
                   margin: const EdgeInsets.only(top: 15),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     tileColor: Color(themeColor),
                     leading: InkWell(
                       onTap: () {
-                        videoPathString =
-                            videoList[searchScreenIndexOf(videoName: result)];
+                        videoPathString = videoList[searchScreenIndexOf(videoName: result)];
                         close(context, null);
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const VideoPlayer(),
@@ -132,8 +128,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       child: SizedBox(
                         width: 120,
                         child: thumbnailWidget(
-                            videoPath: videoList[
-                                searchScreenIndexOf(videoName: result)]),
+                            videoPath: videoList[searchScreenIndexOf(videoName: result)]),
                       ),
                     ),
                     title: Text(
@@ -149,22 +144,15 @@ class CustomSearchDelegate extends SearchDelegate {
                             return IconButton(
                                 onPressed: () {
                                   if (likedOrNot(string: result)) {
-                                    likedBox.delete(videoList[
-                                        searchScreenIndexOf(
-                                            videoName: result)]);
+                                    likedBox
+                                        .delete(videoList[searchScreenIndexOf(videoName: result)]);
                                   } else {
-                                    likedBox.put(
-                                        videoList[searchScreenIndexOf(
-                                            videoName: result)],
-                                        videoList[searchScreenIndexOf(
-                                            videoName: result)]);
+                                    likedBox.put(videoList[searchScreenIndexOf(videoName: result)],
+                                        videoList[searchScreenIndexOf(videoName: result)]);
                                   }
-                                  // searchScreenLike.value = likedBox.values;
 
-                                  final cubit =
-                                      BlocProvider.of<SearchLikeCubit>(context);
-                                  cubit
-                                      .searchLikeList(likedBox.values.toList());
+                                  final cubit = BlocProvider.of<SearchLikeCubit>(context);
+                                  cubit.searchLikeList(likedBox.values.toList());
                                 },
                                 icon: likedOrNot(string: result)
                                     ? const Icon(
@@ -182,10 +170,8 @@ class CustomSearchDelegate extends SearchDelegate {
                               bottomSheetList: videoList,
                               // showCreatePlaylistOption: true
                             );
-                            final cubit =
-                                BlocProvider.of<BottomSheetCubit>(context);
-                            cubit.showCreatePlaylistOption(
-                                showCreatePlaylistOption: true);
+                            final cubit = BlocProvider.of<BottomSheetCubit>(context);
+                            cubit.showCreatePlaylistOption(showCreatePlaylistOption: true);
                           },
                           icon: const Icon(Icons.playlist_add),
                         )
@@ -203,18 +189,18 @@ class CustomSearchDelegate extends SearchDelegate {
 
   void searchFilter(List<String> matchQuery) {
     for (var searchText in searchTerms) {
-      bool searchFoundorNot =
-          searchText[0].toString().toLowerCase().contains(query.toLowerCase());
+      bool searchFoundorNot = searchText[0].toString().toLowerCase().contains(query.toLowerCase());
 
-      if (filter1) {
-        if (searchFoundorNot && (searchText[1] <= filter1Value)) {
-          matchQuery.add(searchText[0]);
-        }
-      } else if (filter2) {
-        if (searchFoundorNot && (searchText[1] >= filter2Value)) {
-          matchQuery.add(searchText[0]);
-        }
-      } else if (searchFoundorNot) {
+      // if (filter1) {
+      //   if (searchFoundorNot && (searchText[1] <= filter1Value)) {
+      //     matchQuery.add(searchText[0]);
+      //   }
+      // } else if (filter2) {
+      //   if (searchFoundorNot && (searchText[1] >= filter2Value)) {
+      //     matchQuery.add(searchText[0]);
+      //   }
+      // } else
+      if (searchFoundorNot) {
         matchQuery.add(searchText[0]);
       }
     }
